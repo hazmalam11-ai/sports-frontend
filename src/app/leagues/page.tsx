@@ -151,7 +151,7 @@ export default function LeaguesPage() {
         setDisplayedLeagues(prioritizedLeagues.slice(0, displayCount));
       } catch (e) {
         if (isMounted) {
-          setError(e?.message || "Failed to load");
+          setError(e instanceof Error ? e.message : "Failed to load");
         }
       } finally {
         if (isMounted) {
