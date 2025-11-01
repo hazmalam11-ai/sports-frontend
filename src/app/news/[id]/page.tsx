@@ -794,7 +794,7 @@ export default function NewsDetailPage() {
                             >
                               Reply
                             </button>
-                            {comment.repliesCount > 0 && (
+                            {(comment.repliesCount ?? 0) > 0 && (
                               <span className={`text-xs ${textSubtle}`}>
                                 {comment.repliesCount} {comment.repliesCount === 1 ? 'reply' : 'replies'}
                               </span>
