@@ -916,8 +916,8 @@ export default function NewsDetailPage() {
                                     onError={(e) => {
                                       // Fallback to letter avatar if image fails to load
                                       e.currentTarget.style.display = 'none';
-                                      (e.currentTarget.nextElementSibling as HTMLElement | null)?.style.display = 'flex';
-                                    }}
+                                      const nextEl = e.currentTarget.nextElementSibling as HTMLElement | null;
+                                    if (nextEl) nextEl.style.display = 'flex'; }}
                                   />
                                 ) : null}
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold ${
