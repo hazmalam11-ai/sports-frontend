@@ -737,7 +737,7 @@ export default function NewsDetailPage() {
                             onError={(e) => {
                               // Fallback to letter avatar if image fails to load
                               e.currentTarget.style.display = 'none';
-                              e.currentTarget.nextElementSibling!.style.display = 'flex';
+                              (e.currentTarget.nextElementSibling as HTMLElement)!.style.display = 'flex';
                             }}
                           />
                         ) : null}
