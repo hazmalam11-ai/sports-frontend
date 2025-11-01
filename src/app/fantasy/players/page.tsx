@@ -51,7 +51,7 @@ export default function FantasyPlayersPage() {
   const fetchPlayers = async () => {
     try {
       setLoading(true);
-      const response = await apiFetch<Player[]>('/fantasy/players', {}, token);
+      const response = await apiFetch<Player[]>('/fantasy/players', {}, token ?? '');
       setPlayers(response);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch players');
