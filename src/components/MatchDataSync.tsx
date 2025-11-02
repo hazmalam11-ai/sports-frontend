@@ -56,7 +56,7 @@ const MatchDataSync: React.FC = () => {
     setLoading(true);
     try {
       const liveMatches = await apiFetch('/api/match-data/live');
-      setLiveMatches(liveMatches || []);
+setLiveMatches(liveMatches || []);
     } catch (error) {
       console.error('Error fetching live matches:', error);
     } finally {
