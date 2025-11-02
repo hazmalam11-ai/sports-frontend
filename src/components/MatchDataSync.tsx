@@ -88,8 +88,6 @@ setLiveMatches(liveMatches || []);
     setSyncing(true);
     try {
        const res = await apiFetch('/api/match-data/sync-live', {
-  method: 'POST'
-});
       
       const response = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
       fetchLiveMatches();
