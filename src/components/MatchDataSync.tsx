@@ -83,7 +83,7 @@ setLiveMatches(liveMatches || []);
     }
   };
 
-  // Sync all live matches
+// Sync all live matches
 const syncAllLiveMatches = async () => {
   setSyncing(true);
   try {
@@ -93,7 +93,7 @@ const syncAllLiveMatches = async () => {
     });
 
     // بعد المزامنة، جيب تفاصيل الماتشات
-    const matchRes = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
+    const matchRes = await apiFetch<any>(`/api/match-data/match/${matchId}`);
 
     fetchLiveMatches(); // إعادة تحميل البيانات بعد المزامنة
 
@@ -111,7 +111,7 @@ const fetchMatchPlayerStats = async (matchId: number) => {
     const playerRes = await apiFetch(`/api/match-data/match/${matchId}`);
     if (playerRes.playerStats) {
       // Process player stats for display
-      const stats: PlayerStats[] = [];
+      const stats: PlayerStats[] = []; 
 
         // Process home team players
         if (response.playerStats[0]) {
