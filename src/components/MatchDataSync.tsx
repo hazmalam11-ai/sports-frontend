@@ -84,29 +84,35 @@ setLiveMatches(liveMatches || []);
   };
 
   // Sync all live matches
-  const syncAllLiveMatches = async () => {
-    setSyncing(true);
-    try {
-       const res = await apiFetch('/api/match-data/sync-live', {
-      
-      const response = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
-      fetchLiveMatches();
-    } catch (error) {
-      console.error('Error syncing live matches:', error);
-      alert('❌ Failed to sync live matches');
-    } finally {
-      setSyncing(false);
-    }
-  };
+const syncAllLiveMatches = async () => {
+  setSyncing(true);
+  try {
+    // استدعاء المزامنة
+    const syncRes = await apiFetch('/api/match-data/sync-live', {
+      method: 'POST',
+    });
 
-  // Get match player stats
-  const fetchMatchPlayerStats = async (matchId: number) => {
-    try {
-      const response = await apiFetch(`/api/match-data/match/${matchId}`);
-      if (response.playerStats) {
-        // Process player stats for display
-        const stats: PlayerStats[] = [];
-        
+    // بعد المزامنة، جيب تفاصيل الماتشات
+    const matchRes = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
+
+    fetchLiveMatches(); // إعادة تحميل البيانات بعد المزامنة
+
+  } catch (error) {
+    console.error('Error syncing live matches:', error);
+    alert('❌ Failed to sync live matches');
+  } finally {
+    setSyncing(false);
+  }
+};
+
+// Get match player stats
+const fetchMatchPlayerStats = async (matchId: number) => {
+  try {
+    const playerRes = await apiFetch(`/api/match-data/match/${matchId}`);
+    if (playerRes.playerStats) {
+      // Process player stats for display
+      const stats: PlayerStats[] = [];
+
         // Process home team players
         if (response.playerStats[0]) {
           response.playerStats[0].forEach((player: any) => {
