@@ -1,4 +1,4 @@
-// components/MatchDataSync.tsx
+```typescript
 import React, { useState, useEffect } from 'react';
 import { apiFetch } from '../utils/api';
 
@@ -55,8 +55,8 @@ const MatchDataSync: React.FC = () => {
   const fetchLiveMatches = async () => {
     setLoading(true);
     try {
-      const liveMatches: any[] = await apiFetch<any[]>('/api/match-data/live');
-setLiveMatches(liveMatches || []);
+      const liveMatchesData: any[] = await apiFetch<any[]>('/api/match-data/live');
+      setLiveMatches(liveMatchesData || []);
     } catch (error) {
       console.error('Error fetching live matches:', error);
     } finally {
@@ -68,7 +68,7 @@ setLiveMatches(liveMatches || []);
   const syncMatchData = async (matchId: number) => {
     setSyncing(true);
     try {
-      const response = await apiFetch(`/api/match-data/sync/${matchId}`, {
+      const syncResponse = await apiFetch(`/api/match-data/sync/${matchId}`, {
         method: 'POST'
       });
       
@@ -83,39 +83,37 @@ setLiveMatches(liveMatches || []);
     }
   };
 
-// Sync all live matches
-const syncAllLiveMatches = async () => {
-  setSyncing(true);
-  try {
-    // استدعاء المزامنة
-    const syncRes = await apiFetch('/api/match-data/sync-live', {
-      method: 'POST',
-    });
+  // Sync all live matches
+  const syncAllLiveMatches = async () => {
+    setSyncing(true);
+    try {
+      // استدعاء المزامنة
+      const syncAllResponse = await apiFetch('/api/match-data/sync-live', {
+        method: 'POST',
+      });
 
-    // بعد المزامنة، جيب تفاصيل الماتشات
-    const matchRes = await apiFetch<any>(`/api/match-data/match/${matchId}`);
+      fetchLiveMatches(); // إعادة تحميل البيانات بعد المزامنة
+      alert('✅ All live matches synced successfully!');
 
-    fetchLiveMatches(); // إعادة تحميل البيانات بعد المزامنة
+    } catch (error) {
+      console.error('Error syncing live matches:', error);
+      alert('❌ Failed to sync live matches');
+    } finally {
+      setSyncing(false);
+    }
+  };
 
-  } catch (error) {
-    console.error('Error syncing live matches:', error);
-    alert('❌ Failed to sync live matches');
-  } finally {
-    setSyncing(false);
-  }
-};
-
-// Get match player stats
-const fetchMatchPlayerStats = async (matchId: number) => {
-  try {
-    const playerRes = await apiFetch(`/api/match-data/match/${matchId}`);
-    if (playerRes.playerStats) {
-      // Process player stats for display
-      const stats: PlayerStats[] = []; 
+  // Get match player stats
+  const fetchMatchPlayerStats = async (matchId: number) => {
+    try {
+      const matchStatsResponse: any = await apiFetch(`/api/match-data/match/${matchId}`);
+      if (matchStatsResponse.playerStats) {
+        // Process player stats for display
+        const stats: PlayerStats[] = [];
 
         // Process home team players
-        if (response.playerStats[0]) {
-          response.playerStats[0].forEach((player: any) => {
+        if (matchStatsResponse.playerStats[0]) {
+          matchStatsResponse.playerStats[0].forEach((player: any) => {
             stats.push({
               playerId: player.player.id,
               name: player.player.name,
@@ -132,10 +130,10 @@ const fetchMatchPlayerStats = async (matchId: number) => {
             });
           });
         }
-        
+
         // Process away team players
-        if (response.playerStats[1]) {
-          response.playerStats[1].forEach((player: any) => {
+        if (matchStatsResponse.playerStats[1]) {
+          matchStatsResponse.playerStats[1].forEach((player: any) => {
             stats.push({
               playerId: player.player.id,
               name: player.player.name,
@@ -152,7 +150,7 @@ const fetchMatchPlayerStats = async (matchId: number) => {
             });
           });
         }
-        
+
         setPlayerStats(stats);
       }
     } catch (error) {
