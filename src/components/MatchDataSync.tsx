@@ -91,7 +91,8 @@ setLiveMatches(liveMatches || []);
         method: 'POST'
       });
       
-      alert(`✅ Synced ${response.synced} live matches!`);
+      const res = response as any;
+alert(`✅ Synced ${res.synced} live matches!`);
       fetchLiveMatches();
     } catch (error) {
       console.error('Error syncing live matches:', error);
