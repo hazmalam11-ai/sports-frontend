@@ -91,8 +91,7 @@ setLiveMatches(liveMatches || []);
         method: 'POST'
       });
       
-      const res = response as any;
-alert(`✅ Synced ${res.synced} live matches!`);
+      const response = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
       fetchLiveMatches();
     } catch (error) {
       console.error('Error syncing live matches:', error);
