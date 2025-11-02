@@ -87,9 +87,9 @@ setLiveMatches(liveMatches || []);
   const syncAllLiveMatches = async () => {
     setSyncing(true);
     try {
-      const response = await apiFetch('/api/match-data/sync-live', {
-        method: 'POST'
-      });
+       const res = await apiFetch('/api/match-data/sync-live', {
+  method: 'POST'
+});
       
       const response = (await apiFetch<any>(`/api/match-data/match/${matchId}`)) as any;
       fetchLiveMatches();
